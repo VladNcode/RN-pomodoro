@@ -11,7 +11,7 @@ export function ExternalLink(props: React.ComponentProps<typeof Link>) {
         target: '_blank',
       }}
       {...props}
-      onPress={(e) => {
+      onPress={e => {
         if (Platform.OS !== 'web') {
           // Prevent the default behavior of linking to the default browser on native.
           e.preventDefault();
