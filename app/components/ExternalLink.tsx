@@ -3,7 +3,9 @@ import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
 import { Platform } from 'react-native';
 
-export function ExternalLink(props: React.ComponentProps<typeof Link>) {
+export default function ExternalLink(props: React.ComponentProps<typeof Link>) {
+  const { href } = props;
+
   return (
     <Link
       hrefAttrs={{
@@ -16,7 +18,7 @@ export function ExternalLink(props: React.ComponentProps<typeof Link>) {
           // Prevent the default behavior of linking to the default browser on native.
           e.preventDefault();
           // Open the link in an in-app browser.
-          WebBrowser.openBrowserAsync(props.href as string);
+          WebBrowser.openBrowserAsync(href as string);
         }
       }}
     />

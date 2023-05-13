@@ -21,16 +21,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function TabOneScreen() {
+export default function TabTwoScreen() {
   const { settings } = usePomodoroContext();
-
-  console.log(settings.test);
+  console.log(settings.test2);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Pomodoro</Text>
+      <Text style={styles.title}>Settings</Text>
       <View style={styles.separator} />
-      <EditScreenInfo path="src/(tabs)/index.tsx" />
+      <EditScreenInfo path="src/(tabs)/settings.tsx" />
     </View>
   );
 }

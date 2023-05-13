@@ -1,18 +1,39 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { DarkTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
-import { useEffect } from 'react';
-import { useColorScheme } from 'react-native';
+import { useEffect, useMemo, useState } from 'react';
+import { PomodoroContext } from './context/usePomodoroContext';
 
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
+export { ErrorBoundary } from 'expo-router';
 
-export const unstable_settings = {
+export const unstableSettings = {
   // Ensure that reloading on `/modal` keeps a back button present.
   initialRouteName: '(tabs)',
+};
+
+const RootLayoutNav = () => {
+  const [settings, setSettings] = useState({ test: 123, test2: 456 });
+
+  const values = useMemo(() => ({ settings, setSettings }), [settings]);
+
+  return (
+    <PomodoroContext.Provider value={values}>
+      <ThemeProvider
+        value={{
+          ...DarkTheme,
+          colors: {
+            ...DarkTheme.colors,
+            card: DarkTheme.colors.background,
+          },
+        }}>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+        </Stack>
+      </ThemeProvider>
+    </PomodoroContext.Provider>
+  );
 };
 
 export default function RootLayout() {
@@ -31,21 +52,6 @@ export default function RootLayout() {
       {/* Keep the splash screen open until the assets have loaded. In the future, we should just support async font loading with a native version of font-display. */}
       {!loaded && <SplashScreen />}
       {loaded && <RootLayoutNav />}
-    </>
-  );
-}
-
-function RootLayoutNav() {
-  const colorScheme = useColorScheme();
-
-  return (
-    <>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-        </Stack>
-      </ThemeProvider>
     </>
   );
 }
