@@ -1,20 +1,8 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 
-type PomodoroContextType =
-  | {
-      settings: { test: number; test2: number };
-      setSettings: React.Dispatch<
-        React.SetStateAction<{
-          test: number;
-          test2: number;
-        }>
-      >;
-    }
-  | undefined;
+import { PomodoroContext } from './PomodoroContext';
 
-export const PomodoroContext = React.createContext<PomodoroContextType>(undefined);
-
-export const usePomodoroContext = () => {
+const usePomodoroContext = () => {
   const pomodoroContext = useContext(PomodoroContext);
 
   if (!pomodoroContext) {
@@ -23,3 +11,5 @@ export const usePomodoroContext = () => {
 
   return pomodoroContext;
 };
+
+export default usePomodoroContext;

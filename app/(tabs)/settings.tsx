@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
-import { usePomodoroContext } from '../context/usePomodoroContext';
+import usePomodoroContext from '../context/usePomodoroContext';
 
 const styles = StyleSheet.create({
   container: {

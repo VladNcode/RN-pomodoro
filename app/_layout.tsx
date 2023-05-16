@@ -2,8 +2,9 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
-import { useEffect, useMemo, useState } from 'react';
-import { PomodoroContext } from './context/usePomodoroContext';
+import { useEffect } from 'react';
+
+import { PomorodoContextProvider } from './context/PomodoroContext';
 
 export { ErrorBoundary } from 'expo-router';
 
@@ -13,12 +14,8 @@ export const unstableSettings = {
 };
 
 const RootLayoutNav = () => {
-  const [settings, setSettings] = useState({ test: 123, test2: 456 });
-
-  const values = useMemo(() => ({ settings, setSettings }), [settings]);
-
   return (
-    <PomodoroContext.Provider value={values}>
+    <PomorodoContextProvider>
       <ThemeProvider
         value={{
           ...DarkTheme,
@@ -32,7 +29,7 @@ const RootLayoutNav = () => {
           <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
         </Stack>
       </ThemeProvider>
-    </PomodoroContext.Provider>
+    </PomorodoContextProvider>
   );
 };
 
