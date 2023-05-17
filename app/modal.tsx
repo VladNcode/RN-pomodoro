@@ -6,10 +6,12 @@ import EditScreenInfo from './components/EditScreenInfo';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
   title: {
+    backgroundColor: '#fff',
     fontSize: 20,
     fontWeight: 'bold',
   },
@@ -28,7 +30,7 @@ export default function ModalScreen() {
       <EditScreenInfo path="src/modal.tsx" />
 
       {/* Use a light status bar on iOS to account for the black space above the modal */}
-      <StatusBar />
+      <StatusBar backgroundColor="#FFFFFF" translucent={false} />
     </View>
   );
 }

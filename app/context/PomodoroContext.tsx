@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 
-import { TimerState } from '../types/globalTypes';
 import { BREAK_TIME_IN_SECONDS, WORK_TIME_IN_SECONDS } from '../constants/settings';
+import { TimerState } from '../types/globalTypes';
 
 type PomodoroContextType =
   | undefined
@@ -14,8 +14,8 @@ type PomodoroContextType =
       setTimerState: React.Dispatch<React.SetStateAction<TimerState>>;
       autoplay: boolean;
       setAutoplay: React.Dispatch<React.SetStateAction<boolean>>;
-      settings: { test: number; test2: number };
-      setSettings: React.Dispatch<React.SetStateAction<{ test: number; test2: number }>>;
+      vibration: boolean;
+      setVibration: React.Dispatch<React.SetStateAction<boolean>>;
       workDuration: number;
       setWorkDuration: React.Dispatch<React.SetStateAction<number>>;
       breakDuration: number;
@@ -25,9 +25,9 @@ type PomodoroContextType =
 export const PomodoroContext = React.createContext<PomodoroContextType>(undefined);
 
 export const PomorodoContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [settings, setSettings] = useState({ test: 123, test2: 456 });
-  const [timerState, setTimerState] = useState<TimerState>('break');
+  const [timerState, setTimerState] = useState<TimerState>('work');
   const [autoplay, setAutoplay] = useState(false);
+  const [vibration, setVibration] = useState(false);
   const [workCounter, setWorkCounter] = useState(0);
   const [breakCounter, setBreakCounter] = useState(0);
   const [workDuration, setWorkDuration] = useState(WORK_TIME_IN_SECONDS);
@@ -35,12 +35,12 @@ export const PomorodoContextProvider = ({ children }: { children: React.ReactNod
 
   const values = useMemo(
     () => ({
-      settings,
-      setSettings,
       timerState,
       setTimerState,
       autoplay,
       setAutoplay,
+      vibration,
+      setVibration,
       workCounter,
       setWorkCounter,
       breakCounter,
@@ -50,7 +50,7 @@ export const PomorodoContextProvider = ({ children }: { children: React.ReactNod
       breakDuration,
       setBreakDuration,
     }),
-    [settings, timerState, autoplay, workCounter, breakCounter, workDuration, breakDuration],
+    [timerState, autoplay, vibration, workCounter, breakCounter, workDuration, breakDuration],
   );
 
   return <PomodoroContext.Provider value={values}>{children}</PomodoroContext.Provider>;
