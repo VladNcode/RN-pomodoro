@@ -4,14 +4,10 @@ import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
 
+import Colors from './constants/Colors';
 import { PomorodoContextProvider } from './context/PomodoroContext';
 
 export { ErrorBoundary } from 'expo-router';
-
-export const unstableSettings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
-};
 
 const RootLayoutNav = () => {
   return (
@@ -26,7 +22,17 @@ const RootLayoutNav = () => {
         }}>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+          <Stack.Screen
+            name="modal"
+            options={{
+              presentation: 'card',
+              title: 'Info',
+              headerTintColor: Colors.white,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }}
+          />
         </Stack>
       </ThemeProvider>
     </PomorodoContextProvider>
@@ -36,6 +42,9 @@ const RootLayoutNav = () => {
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    Poppins: require('../assets/fonts/Poppins-Regular.ttf'),
+    PoppinsLight: require('../assets/fonts/Poppins-Light.ttf'),
+    PoppinsBold: require('../assets/fonts/Poppins-Bold.ttf'),
     ...FontAwesome.font,
   });
 

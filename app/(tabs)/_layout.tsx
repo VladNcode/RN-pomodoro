@@ -1,6 +1,7 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Link, Tabs } from 'expo-router';
 import { Pressable, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
 
@@ -19,15 +20,16 @@ const styles = StyleSheet.create({
   },
 });
 
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
-function TabBarIcon(props: { name: React.ComponentProps<typeof FontAwesome>['name']; color: string }) {
-  const { name, color } = props;
-  return <FontAwesome size={28} style={styles.nagativeMB} name={name} color={color} />;
+interface TabBarIonIconProps {
+  name: React.ComponentProps<typeof Ionicons>['name'];
+  activeColor: string;
+  inactiveColor: string;
+  focused: boolean;
 }
 
-const tabBarIcon = ({ color }: { color: string }) => <TabBarIcon name="code" color={color} />;
+interface IconProps {
+  focused: boolean;
+}
 
 const headerRight = () => (
   <Link href="/modal" asChild>
@@ -36,7 +38,7 @@ const headerRight = () => (
         <FontAwesome
           name="info-circle"
           size={25}
-          color={Colors.dark.text}
+          color={Colors.gray}
           style={[styles.marginRight, pressed ? styles.opacityPressed : styles.opacityUnpressed]}
         />
       )}
@@ -44,11 +46,41 @@ const headerRight = () => (
   </Link>
 );
 
+const TabBarIonIcon = (props: TabBarIonIconProps) => {
+  const { name, activeColor, inactiveColor, focused } = props;
+  return <Ionicons size={28} style={styles.nagativeMB} name={name} color={focused ? activeColor : inactiveColor} />;
+};
+
+const timerIcon = ({ focused }: IconProps) => (
+  <TabBarIonIcon name="timer-outline" activeColor={Colors.white} inactiveColor={Colors.gray} focused={focused} />
+);
+const settingsIcon = ({ focused }: IconProps) => (
+  <TabBarIonIcon name="settings-outline" activeColor={Colors.white} inactiveColor={Colors.gray} focused={focused} />
+);
+
 export default function TabLayout() {
   return (
     <Tabs>
-      <Tabs.Screen name="index" options={{ title: 'Pomodoro', tabBarIcon, headerRight }} />
-      <Tabs.Screen name="settings" options={{ title: 'Settings', tabBarIcon }} />
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: 'Pomodoro',
+          tabBarLabel: 'Timer',
+          tabBarActiveTintColor: Colors.white,
+          tabBarInactiveTintColor: Colors.gray,
+          tabBarIcon: timerIcon,
+          headerRight,
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Settings',
+          tabBarActiveTintColor: Colors.white,
+          tabBarInactiveTintColor: Colors.gray,
+          tabBarIcon: settingsIcon,
+        }}
+      />
     </Tabs>
   );
 }

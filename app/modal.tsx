@@ -1,17 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 
-import EditScreenInfo from './components/EditScreenInfo';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.white,
     alignItems: 'center',
     justifyContent: 'center',
   },
   title: {
-    backgroundColor: '#fff',
+    backgroundColor: Colors.white,
     fontSize: 20,
     fontWeight: 'bold',
   },
@@ -27,10 +27,9 @@ export default function ModalScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>Modal</Text>
       <View style={styles.separator} />
-      <EditScreenInfo path="src/modal.tsx" />
 
       {/* Use a light status bar on iOS to account for the black space above the modal */}
-      <StatusBar backgroundColor="#FFFFFF" translucent={false} />
+      <StatusBar backgroundColor={Colors.white} translucent={false} />
     </View>
   );
 }

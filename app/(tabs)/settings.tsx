@@ -1,25 +1,28 @@
 import { Dimensions, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import InputSpinner from 'react-native-input-spinner';
+import { Entypo } from '@expo/vector-icons';
+import RNBounceable from '@freakycoder/react-native-bounceable';
 
+import Colors from '../constants/Colors';
+import Fonts from '../constants/Fonts';
 import usePomodoroContext from '../context/usePomodoroContext';
-import { convertSecondsToMinutes } from '../utils/utils';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: height * 0.03,
     paddingHorizontal: width * 0.05,
     flex: 1,
+    justifyContent: 'center',
   },
 
   timeInputContainer: {
     alignItems: 'center',
   },
   timeInputLabel: {
-    fontFamily: 'SpaceMono',
-    color: '#FFFFFF',
+    fontFamily: Fonts.Poppins,
+    color: Colors.white,
     fontSize: 20,
     fontWeight: 'bold',
   },
@@ -28,7 +31,7 @@ const styles = StyleSheet.create({
     width: width * 0.6,
   },
   timeInputNumbers: {
-    color: '#FFFFFF',
+    color: Colors.white,
   },
 
   mediumMarginTop: {
@@ -45,44 +48,63 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   checkboxText: {
-    color: '#FFFFFF',
-    fontFamily: 'SpaceMono',
+    color: Colors.white,
+    fontFamily: Fonts.Poppins,
     textDecorationLine: 'none',
   },
   checkboxInnerIconStyle: {
     borderWidth: 4,
   },
   redBorder: {
-    borderColor: '#f04040',
+    borderColor: Colors.red,
   },
   greenBorder: {
-    borderColor: '#40f07b',
+    borderColor: Colors.green,
   },
   title: {
-    color: '#FFFFFF',
+    color: Colors.white,
     fontSize: 20,
     fontWeight: 'bold',
-    fontFamily: 'SpaceMono',
+    fontFamily: Fonts.Poppins,
   },
   info: {
     marginTop: 20,
     alignItems: 'center',
+  },
+  resetContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 50,
+  },
+  resetText: {
+    color: Colors.white,
+    fontFamily: Fonts.Poppins,
+    fontSize: 25,
+    marginLeft: 16,
   },
 });
 
 export default function TabTwoScreen() {
   const {
     autoplay,
-    setAutoplay,
     vibration,
     setVibration,
     breakDuration,
     workDuration,
+    setAutoplay,
     setWorkDuration,
     setBreakDuration,
-    workCounter,
-    breakCounter,
+    setBreakCounter,
+    setWorkCounter,
+    setTimerState,
   } = usePomodoroContext();
+
+  const reset = () => {
+    setBreakCounter(0);
+    setWorkCounter(0);
+    setTimerState('work');
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -97,9 +119,9 @@ export default function TabTwoScreen() {
           min={1}
           step={1}
           inputProps={styles.timeInputNumbers}
-          colorMax="#fff200"
-          color="#f04040"
-          colorMin="#40c5f4"
+          colorMax={Colors.yellow}
+          color={Colors.red}
+          colorMin={Colors.blue}
           value={workDuration / 60}
           onChange={num => {
             if (typeof num === 'number') setWorkDuration(num * 60);
@@ -118,9 +140,9 @@ export default function TabTwoScreen() {
           min={1}
           step={1}
           inputProps={styles.timeInputNumbers}
-          colorMax="#fff200"
-          color="#40f07b"
-          colorMin="#40c5f4"
+          colorMax={Colors.yellow}
+          color={Colors.green}
+          colorMin={Colors.blue}
           value={breakDuration / 60}
           onChange={num => {
             if (typeof num === 'number') setBreakDuration(num * 60);
@@ -132,7 +154,7 @@ export default function TabTwoScreen() {
         <BouncyCheckbox
           style={styles.checkbox}
           size={30}
-          fillColor="#40f07b"
+          fillColor={Colors.green}
           text="Toggle autoplay"
           innerIconStyle={[styles.checkboxInnerIconStyle, autoplay ? styles.greenBorder : styles.redBorder]}
           textStyle={styles.checkboxText}
@@ -144,7 +166,7 @@ export default function TabTwoScreen() {
         <BouncyCheckbox
           style={styles.checkbox}
           size={30}
-          fillColor="#40f07b"
+          fillColor={Colors.green}
           text="Toggle vibration"
           innerIconStyle={[styles.checkboxInnerIconStyle, vibration ? styles.greenBorder : styles.redBorder]}
           textStyle={styles.checkboxText}
@@ -154,12 +176,10 @@ export default function TabTwoScreen() {
         />
       </View>
 
-      <View style={styles.info}>
-        <Text style={styles.title}>{`Work counter: ${workCounter}`}</Text>
-        <Text style={styles.title}>{`Break counter: ${breakCounter}`}</Text>
-        <Text style={styles.title}>{`Work duration: ${convertSecondsToMinutes(workDuration)}`}</Text>
-        <Text style={styles.title}>{`Break duration: ${convertSecondsToMinutes(breakDuration)}`}</Text>
-      </View>
+      <RNBounceable style={styles.resetContainer} hitSlop={16} onPress={reset}>
+        <Entypo name="back-in-time" size={40} color={Colors.white} />
+        <Text style={styles.resetText}>Reset sessions</Text>
+      </RNBounceable>
     </SafeAreaView>
   );
 }

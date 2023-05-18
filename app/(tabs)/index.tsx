@@ -1,10 +1,13 @@
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import RNBounceable from '@freakycoder/react-native-bounceable';
 import { useState } from 'react';
-import { StyleSheet, Text, View, Vibration } from 'react-native';
+import { StyleSheet, Text, Vibration, View } from 'react-native';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 
+import Colors from '../constants/Colors';
 import usePomodoroContext from '../context/usePomodoroContext';
 import { convertSecondsToMinutesAndSeconds } from '../utils/utils';
+import Fonts from '../constants/Fonts';
 
 const styles = StyleSheet.create({
   container: {
@@ -14,31 +17,25 @@ const styles = StyleSheet.create({
   },
 
   sessions: {
-    fontFamily: 'SpaceMono',
-    color: '#FFFFFF',
+    fontFamily: Fonts.Poppins,
+    color: Colors.white,
     fontSize: 25,
     fontWeight: 'bold',
   },
 
   timerText: {
-    fontFamily: 'SpaceMono',
-    color: '#FFFFFF',
+    fontFamily: Fonts.SpaceMono,
+    color: Colors.white,
     fontSize: 40,
     fontWeight: 'bold',
   },
 
   stopStartButton: {
-    marginTop: 16,
+    marginTop: 10,
     height: 50,
-    width: '60%',
-    backgroundColor: '#7cf6ff',
-    borderRadius: 12,
+    width: 50,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  stopStartButtonText: {
-    fontFamily: 'SpaceMono',
-    color: '#000000',
   },
   countdownContainer: {
     marginVertical: 60,
@@ -74,7 +71,7 @@ export default function TabOneScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.sessions}>{`Sessions: ${Math.floor((workCounter + breakCounter) / 2)}`}</Text>
+      <Text style={styles.sessions}>{`Sessions completed: ${Math.floor((workCounter + breakCounter) / 2)}`}</Text>
 
       <View style={styles.countdownContainer}>
         <CountdownCircleTimer
@@ -87,15 +84,19 @@ export default function TabOneScreen() {
           onComplete={onTimerComplete}
           strokeLinecap="butt"
           trailColor={timerState === 'work' ? 'rgba(163, 0, 0, 0.35)' : 'rgba(34, 184, 69, 0.35)'}
-          colors={timerState === 'work' ? '#f04040' : '#40f07b'}>
+          colors={timerState === 'work' ? Colors.red : Colors.green}>
           {({ remainingTime }) => (
             <Text style={styles.timerText}>{convertSecondsToMinutesAndSeconds(remainingTime)}</Text>
           )}
         </CountdownCircleTimer>
       </View>
 
-      <RNBounceable onPress={() => setIsPlaying(c => !c)} style={styles.stopStartButton}>
-        <Text style={styles.stopStartButtonText}>{isPlaying ? 'Pause' : 'Play'}</Text>
+      <RNBounceable hitSlop={16} onPress={() => setIsPlaying(c => !c)} style={styles.stopStartButton}>
+        {isPlaying ? (
+          <FontAwesome name="pause" size={45} color="white" />
+        ) : (
+          <FontAwesome name="play" size={45} color="white" />
+        )}
       </RNBounceable>
     </View>
   );
