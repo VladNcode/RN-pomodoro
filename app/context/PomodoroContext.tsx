@@ -20,6 +20,12 @@ type PomodoroContextType =
       setWorkDuration: React.Dispatch<React.SetStateAction<number>>;
       breakDuration: number;
       setBreakDuration: React.Dispatch<React.SetStateAction<number>>;
+      resetTimer: string;
+      setResetTimer: React.Dispatch<React.SetStateAction<string>>;
+      sound: boolean;
+      setSound: React.Dispatch<React.SetStateAction<boolean>>;
+      selectedMp3: string;
+      setSelectedMp3: React.Dispatch<React.SetStateAction<string>>;
     };
 
 export const PomodoroContext = React.createContext<PomodoroContextType>(undefined);
@@ -28,10 +34,13 @@ export const PomorodoContextProvider = ({ children }: { children: React.ReactNod
   const [timerState, setTimerState] = useState<TimerState>('work');
   const [autoplay, setAutoplay] = useState(false);
   const [vibration, setVibration] = useState(false);
+  const [sound, setSound] = useState(false);
+  const [selectedMp3, setSelectedMp3] = useState('alarm1');
   const [workCounter, setWorkCounter] = useState(0);
   const [breakCounter, setBreakCounter] = useState(0);
   const [workDuration, setWorkDuration] = useState(WORK_TIME_IN_SECONDS);
   const [breakDuration, setBreakDuration] = useState(BREAK_TIME_IN_SECONDS);
+  const [resetTimer, setResetTimer] = useState('');
 
   const values = useMemo(
     () => ({
@@ -49,8 +58,25 @@ export const PomorodoContextProvider = ({ children }: { children: React.ReactNod
       setWorkDuration,
       breakDuration,
       setBreakDuration,
+      resetTimer,
+      setResetTimer,
+      sound,
+      setSound,
+      selectedMp3,
+      setSelectedMp3,
     }),
-    [timerState, autoplay, vibration, workCounter, breakCounter, workDuration, breakDuration],
+    [
+      timerState,
+      autoplay,
+      vibration,
+      workCounter,
+      breakCounter,
+      workDuration,
+      breakDuration,
+      resetTimer,
+      sound,
+      selectedMp3,
+    ],
   );
 
   return <PomodoroContext.Provider value={values}>{children}</PomodoroContext.Provider>;

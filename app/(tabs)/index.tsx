@@ -1,13 +1,14 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import RNBounceable from '@freakycoder/react-native-bounceable';
-import { useState } from 'react';
+import { Audio } from 'expo-av';
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, Vibration, View } from 'react-native';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 
 import Colors from '../constants/Colors';
-import usePomodoroContext from '../context/usePomodoroContext';
-import { convertSecondsToMinutesAndSeconds } from '../utils/utils';
 import Fonts from '../constants/Fonts';
+import usePomodoroContext from '../context/usePomodoroContext';
+import { convertSecondsToMinutesAndSeconds, getRandomString, playSound } from '../utils/utils';
 
 const styles = StyleSheet.create({
   container: {
@@ -53,14 +54,30 @@ export default function TabOneScreen() {
     setBreakCounter,
     workDuration,
     breakDuration,
+    resetTimer,
+    setResetTimer,
+    selectedMp3,
+    sound,
+    vibration,
   } = usePomodoroContext();
 
   const [isPlaying, setIsPlaying] = useState(false);
+  const [stateSound, setStatePSound] = useState<Audio.Sound>();
+
+  useEffect(() => {
+    return stateSound
+      ? () => {
+          stateSound.unloadAsync();
+        }
+      : undefined;
+  }, [stateSound]);
 
   const onTimerComplete = () => {
-    Vibration.vibrate(1000);
+    if (sound) playSound(selectedMp3, setStatePSound);
+    if (vibration) Vibration.vibrate(1000);
     setIsPlaying(autoplay);
     setTimerState(timerState === 'work' ? 'break' : 'work');
+    setResetTimer(getRandomString());
 
     if (timerState === 'work') {
       setWorkCounter(c => c + 1);
@@ -77,8 +94,8 @@ export default function TabOneScreen() {
         <CountdownCircleTimer
           isPlaying={isPlaying}
           size={250}
-          key={timerState}
-          duration={timerState === 'work' ? workDuration / 100 : breakDuration / 20}
+          key={resetTimer}
+          duration={timerState === 'work' ? workDuration / 200 : breakDuration / 40}
           isGrowing
           rotation="counterclockwise"
           onComplete={onTimerComplete}
