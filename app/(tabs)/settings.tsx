@@ -4,13 +4,12 @@ import { Dimensions, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import DropDownPicker from 'react-native-dropdown-picker';
 import InputSpinner from 'react-native-input-spinner';
-import { Audio } from 'expo-av';
+import { useState } from 'react';
 
-import { useEffect, useState } from 'react';
 import Colors from '../constants/Colors';
 import Fonts from '../constants/Fonts';
 import usePomodoroContext from '../context/usePomodoroContext';
-import { getRandomString, playSound } from '../utils/utils';
+import { getRandomString } from '../utils/utils';
 
 const { width } = Dimensions.get('window');
 
@@ -128,6 +127,7 @@ export default function TabTwoScreen() {
     setResetTimer,
     setSound,
     setSelectedMp3,
+    playSound,
   } = usePomodoroContext();
 
   const reset = () => {
@@ -137,7 +137,8 @@ export default function TabTwoScreen() {
     setResetTimer(getRandomString());
   };
 
-  const [stateSound, setStatePSound] = useState<Audio.Sound>();
+  const [disabled, setDisabled] = useState(false);
+
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState([
     { label: 'Alarm', value: 'alarm1' },
@@ -153,14 +154,6 @@ export default function TabTwoScreen() {
     { label: 'Alarm 11', value: 'alarm11' },
     { label: 'Alarm 12', value: 'alarm12' },
   ]);
-
-  useEffect(() => {
-    return stateSound
-      ? () => {
-          stateSound.unloadAsync();
-        }
-      : undefined;
-  }, [stateSound]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -252,14 +245,20 @@ export default function TabTwoScreen() {
 
       {sound ? (
         <DropDownPicker
-          style={styles.mainDropPicker}
+          style={[styles.mainDropPicker, disabled && { backgroundColor: 'gray' }]}
           listItemContainerStyle={styles.dropPickerListItemContainerStyle}
           containerStyle={styles.dropPickerContainerStyle}
           textStyle={styles.dropPickerTextStyle}
-          labelStyle={styles.dropPickerLabelStyle}
+          labelStyle={[styles.dropPickerLabelStyle]}
           onChangeValue={value => {
-            if (value) playSound(value, setStatePSound);
+            if (value) playSound();
+
+            setDisabled(true);
+            setTimeout(() => {
+              setDisabled(false);
+            }, 5000);
           }}
+          disabled={disabled}
           theme="DARK"
           open={open}
           value={selectedMp3}

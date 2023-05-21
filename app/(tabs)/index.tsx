@@ -1,14 +1,13 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import RNBounceable from '@freakycoder/react-native-bounceable';
-import { Audio } from 'expo-av';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, Text, Vibration, View } from 'react-native';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 
 import Colors from '../constants/Colors';
 import Fonts from '../constants/Fonts';
 import usePomodoroContext from '../context/usePomodoroContext';
-import { convertSecondsToMinutesAndSeconds, getRandomString, playSound } from '../utils/utils';
+import { convertSecondsToMinutesAndSeconds, getRandomString } from '../utils/utils';
 
 const styles = StyleSheet.create({
   container: {
@@ -56,33 +55,28 @@ export default function TabOneScreen() {
     breakDuration,
     resetTimer,
     setResetTimer,
-    selectedMp3,
     sound,
     vibration,
+    playSound,
   } = usePomodoroContext();
 
   const [isPlaying, setIsPlaying] = useState(false);
-  const [stateSound, setStatePSound] = useState<Audio.Sound>();
-
-  useEffect(() => {
-    return stateSound
-      ? () => {
-          stateSound.unloadAsync();
-        }
-      : undefined;
-  }, [stateSound]);
 
   const onTimerComplete = () => {
-    if (sound) playSound(selectedMp3, setStatePSound);
-    if (vibration) Vibration.vibrate(1000);
-    setIsPlaying(autoplay);
-    setTimerState(timerState === 'work' ? 'break' : 'work');
-    setResetTimer(getRandomString());
+    try {
+      if (sound) playSound();
+      if (vibration) Vibration.vibrate(1000);
+      setIsPlaying(autoplay);
+      setTimerState(timerState === 'work' ? 'break' : 'work');
+      setResetTimer(getRandomString());
 
-    if (timerState === 'work') {
-      setWorkCounter(c => c + 1);
-    } else {
-      setBreakCounter(c => c + 1);
+      if (timerState === 'work') {
+        setWorkCounter(c => c + 1);
+      } else {
+        setBreakCounter(c => c + 1);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

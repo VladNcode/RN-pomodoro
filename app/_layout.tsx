@@ -3,6 +3,7 @@ import { DarkTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import Colors from './constants/Colors';
 import { PomorodoContextProvider } from './context/PomodoroContext';
@@ -20,20 +21,22 @@ const RootLayoutNav = () => {
             card: DarkTheme.colors.background,
           },
         }}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="modal"
-            options={{
-              presentation: 'card',
-              title: 'Info',
-              headerTintColor: Colors.white,
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
-            }}
-          />
-        </Stack>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="modal"
+              options={{
+                presentation: 'card',
+                title: 'Info',
+                headerTintColor: Colors.white,
+                headerTitleStyle: {
+                  fontWeight: 'bold',
+                },
+              }}
+            />
+          </Stack>
+        </GestureHandlerRootView>
       </ThemeProvider>
     </PomorodoContextProvider>
   );
