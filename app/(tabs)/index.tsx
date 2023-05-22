@@ -4,10 +4,10 @@ import { useState } from 'react';
 import { StyleSheet, Text, Vibration, View } from 'react-native';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 
-import Colors from '../constants/Colors';
-import Fonts from '../constants/Fonts';
-import usePomodoroContext from '../context/usePomodoroContext';
-import { convertSecondsToMinutesAndSeconds, getRandomString } from '../utils/utils';
+import Colors from '../../constants/Colors';
+import Fonts from '../../constants/Fonts';
+import usePomodoroContext from '../../context/usePomodoroContext';
+import { convertSecondsToMinutesAndSeconds, getRandomString } from '../../utils/utils';
 
 const styles = StyleSheet.create({
   container: {
@@ -58,25 +58,21 @@ export default function TabOneScreen() {
     sound,
     vibration,
     playSound,
+    isPlaying,
+    setIsPlaying,
   } = usePomodoroContext();
 
-  const [isPlaying, setIsPlaying] = useState(false);
-
   const onTimerComplete = () => {
-    try {
-      if (sound) playSound();
-      if (vibration) Vibration.vibrate(1000);
-      setIsPlaying(autoplay);
-      setTimerState(timerState === 'work' ? 'break' : 'work');
-      setResetTimer(getRandomString());
+    if (sound) playSound();
+    if (vibration) Vibration.vibrate(1000);
+    setIsPlaying(autoplay);
+    setTimerState(timerState === 'work' ? 'break' : 'work');
+    setResetTimer(getRandomString());
 
-      if (timerState === 'work') {
-        setWorkCounter(c => c + 1);
-      } else {
-        setBreakCounter(c => c + 1);
-      }
-    } catch (error) {
-      console.log(error);
+    if (timerState === 'work') {
+      setWorkCounter(c => c + 1);
+    } else {
+      setBreakCounter(c => c + 1);
     }
   };
 
@@ -89,7 +85,7 @@ export default function TabOneScreen() {
           isPlaying={isPlaying}
           size={250}
           key={resetTimer}
-          duration={timerState === 'work' ? workDuration / 200 : breakDuration / 40}
+          duration={timerState === 'work' ? workDuration : breakDuration}
           isGrowing
           rotation="counterclockwise"
           onComplete={onTimerComplete}

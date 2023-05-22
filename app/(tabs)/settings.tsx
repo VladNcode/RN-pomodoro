@@ -1,15 +1,15 @@
 import { Entypo } from '@expo/vector-icons';
 import RNBounceable from '@freakycoder/react-native-bounceable';
+import { useState } from 'react';
 import { Dimensions, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import DropDownPicker from 'react-native-dropdown-picker';
 import InputSpinner from 'react-native-input-spinner';
-import { useState } from 'react';
 
-import Colors from '../constants/Colors';
-import Fonts from '../constants/Fonts';
-import usePomodoroContext from '../context/usePomodoroContext';
-import { getRandomString } from '../utils/utils';
+import Colors from '../../constants/Colors';
+import Fonts from '../../constants/Fonts';
+import usePomodoroContext from '../../context/usePomodoroContext';
+import { getRandomString } from '../../utils/utils';
 
 const { width } = Dimensions.get('window');
 
@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
   greenBorder: {
     borderColor: Colors.green,
   },
+
   title: {
     color: Colors.white,
     fontSize: 20,
@@ -86,6 +87,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     marginLeft: 16,
   },
+
   mainDropPicker: { width: width * 0.6, alignSelf: 'center', backgroundColor: '#242424', borderRadius: 10 },
   dropPickerListItemContainerStyle: { backgroundColor: '#242424' },
   dropPickerContainerStyle: {
@@ -107,17 +109,19 @@ const styles = StyleSheet.create({
   dropPickerPlaceholderView: {
     height: 70,
   },
+  disabledPicker: { backgroundColor: 'gray' },
 });
 
 export default function TabTwoScreen() {
   const {
     autoplay,
     vibration,
-    setVibration,
     breakDuration,
     workDuration,
     sound,
     selectedMp3,
+    playSound,
+    setVibration,
     setAutoplay,
     setWorkDuration,
     setBreakDuration,
@@ -127,18 +131,10 @@ export default function TabTwoScreen() {
     setResetTimer,
     setSound,
     setSelectedMp3,
-    playSound,
+    setIsPlaying,
   } = usePomodoroContext();
 
-  const reset = () => {
-    setBreakCounter(0);
-    setWorkCounter(0);
-    setTimerState('work');
-    setResetTimer(getRandomString());
-  };
-
   const [disabled, setDisabled] = useState(false);
-
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState([
     { label: 'Alarm', value: 'alarm1' },
@@ -154,6 +150,14 @@ export default function TabTwoScreen() {
     { label: 'Alarm 11', value: 'alarm11' },
     { label: 'Alarm 12', value: 'alarm12' },
   ]);
+
+  const reset = () => {
+    setIsPlaying(false);
+    setBreakCounter(0);
+    setWorkCounter(0);
+    setTimerState('work');
+    setResetTimer(getRandomString());
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -245,7 +249,7 @@ export default function TabTwoScreen() {
 
       {sound ? (
         <DropDownPicker
-          style={[styles.mainDropPicker, disabled && { backgroundColor: 'gray' }]}
+          style={[styles.mainDropPicker, disabled && styles.disabledPicker]}
           listItemContainerStyle={styles.dropPickerListItemContainerStyle}
           containerStyle={styles.dropPickerContainerStyle}
           textStyle={styles.dropPickerTextStyle}

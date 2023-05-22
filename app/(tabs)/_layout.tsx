@@ -1,24 +1,10 @@
+import { Ionicons } from '@expo/vector-icons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Link, Tabs } from 'expo-router';
-import { Pressable, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Pressable } from 'react-native';
 
-import Colors from '../constants/Colors';
-
-const styles = StyleSheet.create({
-  nagativeMB: {
-    marginBottom: -3,
-  },
-  marginRight: {
-    marginRight: 15,
-  },
-  opacityPressed: {
-    opacity: 0.5,
-  },
-  opacityUnpressed: {
-    opacity: 1,
-  },
-});
+import Colors from '../../constants/Colors';
+import globalStyles from '../../constants/globalStyles';
 
 interface TabBarIonIconProps {
   name: React.ComponentProps<typeof Ionicons>['name'];
@@ -39,7 +25,7 @@ const headerRight = () => (
           name="info-circle"
           size={25}
           color={Colors.gray}
-          style={[styles.marginRight, pressed ? styles.opacityPressed : styles.opacityUnpressed]}
+          style={[globalStyles.largeMarginRight, pressed ? globalStyles.opacityPressed : globalStyles.opacityUnpressed]}
         />
       )}
     </Pressable>
@@ -48,7 +34,7 @@ const headerRight = () => (
 
 const TabBarIonIcon = (props: TabBarIonIconProps) => {
   const { name, activeColor, inactiveColor, focused } = props;
-  return <Ionicons size={28} style={styles.nagativeMB} name={name} color={focused ? activeColor : inactiveColor} />;
+  return <Ionicons size={28} name={name} color={focused ? activeColor : inactiveColor} />;
 };
 
 const timerIcon = ({ focused }: IconProps) => (

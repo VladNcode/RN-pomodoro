@@ -5,12 +5,21 @@ import { SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import Colors from './constants/Colors';
-import { PomorodoContextProvider } from './context/PomodoroContext';
+import Colors from '../constants/Colors';
+import { PomorodoContextProvider } from '../context/PomodoroContext';
+import globalStyles from '../constants/globalStyles';
 
 export { ErrorBoundary } from 'expo-router';
 
 const RootLayoutNav = () => {
+  const options = {
+    title: 'Info',
+    headerTintColor: Colors.white,
+    headerTitleStyle: {
+      fontWeight: 'bold' as const,
+    },
+  };
+
   return (
     <PomorodoContextProvider>
       <ThemeProvider
@@ -21,20 +30,10 @@ const RootLayoutNav = () => {
             card: DarkTheme.colors.background,
           },
         }}>
-        <GestureHandlerRootView style={{ flex: 1 }}>
+        <GestureHandlerRootView style={globalStyles.flexOne}>
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen
-              name="modal"
-              options={{
-                presentation: 'card',
-                title: 'Info',
-                headerTintColor: Colors.white,
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                },
-              }}
-            />
+            <Stack.Screen name="modal" options={options} />
           </Stack>
         </GestureHandlerRootView>
       </ThemeProvider>

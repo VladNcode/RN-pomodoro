@@ -1,0 +1,2 @@
+export const DEFAULT_WORK_TIME_IN_SECONDS = 25 * 60;
+export const DEFAULT_BREAK_TIME_IN_SECONDS = 5 * 60;

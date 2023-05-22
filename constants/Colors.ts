@@ -9,4 +9,5 @@ export default {
   blue: '#40c5f4',
   white: '#f8fafc',
   black: '#020617',
+  fullBlack: '#000000',
 } as Record<string, `#${string}`>;

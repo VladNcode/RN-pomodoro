@@ -1,40 +1,45 @@
 import { Audio } from 'expo-av';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { BREAK_TIME_IN_SECONDS, WORK_TIME_IN_SECONDS } from '../constants/settings';
-import { TimerState } from '../types/globalTypes';
+import { DEFAULT_BREAK_TIME_IN_SECONDS, DEFAULT_WORK_TIME_IN_SECONDS } from '../constants/settings';
 
-type PomodoroContextType =
-  | undefined
-  | {
-      workCounter: number;
-      breakCounter: number;
-      setWorkCounter: React.Dispatch<React.SetStateAction<number>>;
-      setBreakCounter: React.Dispatch<React.SetStateAction<number>>;
-      timerState: TimerState;
-      setTimerState: React.Dispatch<React.SetStateAction<TimerState>>;
-      autoplay: boolean;
-      setAutoplay: React.Dispatch<React.SetStateAction<boolean>>;
-      vibration: boolean;
-      setVibration: React.Dispatch<React.SetStateAction<boolean>>;
-      workDuration: number;
-      setWorkDuration: React.Dispatch<React.SetStateAction<number>>;
-      breakDuration: number;
-      setBreakDuration: React.Dispatch<React.SetStateAction<number>>;
-      resetTimer: string;
-      setResetTimer: React.Dispatch<React.SetStateAction<string>>;
-      sound: boolean;
-      setSound: React.Dispatch<React.SetStateAction<boolean>>;
-      selectedMp3: string;
-      setSelectedMp3: React.Dispatch<React.SetStateAction<string>>;
-      stateSound: Audio.Sound | undefined;
-      setStateSound: React.Dispatch<React.SetStateAction<Audio.Sound | undefined>>;
-      playSound: () => Promise<void>;
-    };
+type TimerState = 'work' | 'break';
+type DispatchBoolean = React.Dispatch<React.SetStateAction<boolean>>;
+type DispatchNumber = React.Dispatch<React.SetStateAction<number>>;
+type DispatchString = React.Dispatch<React.SetStateAction<string>>;
 
-export const PomodoroContext = React.createContext<PomodoroContextType>(undefined);
+type PomodoroContextType = {
+  isPlaying: boolean;
+  setIsPlaying: DispatchBoolean;
+  workCounter: number;
+  breakCounter: number;
+  setWorkCounter: DispatchNumber;
+  setBreakCounter: DispatchNumber;
+  timerState: TimerState;
+  setTimerState: React.Dispatch<React.SetStateAction<TimerState>>;
+  autoplay: boolean;
+  setAutoplay: DispatchBoolean;
+  vibration: boolean;
+  setVibration: DispatchBoolean;
+  workDuration: number;
+  setWorkDuration: DispatchNumber;
+  breakDuration: number;
+  setBreakDuration: DispatchNumber;
+  resetTimer: string;
+  setResetTimer: DispatchString;
+  sound: boolean;
+  setSound: DispatchBoolean;
+  selectedMp3: string;
+  setSelectedMp3: DispatchString;
+  stateSound: Audio.Sound | undefined;
+  setStateSound: React.Dispatch<React.SetStateAction<Audio.Sound | undefined>>;
+  playSound: () => Promise<void>;
+};
+
+export const PomodoroContext = React.createContext({} as PomodoroContextType);
 
 export const PomorodoContextProvider = ({ children }: { children: React.ReactNode }) => {
+  const [isPlaying, setIsPlaying] = useState(false);
   const [timerState, setTimerState] = useState<TimerState>('work');
   const [autoplay, setAutoplay] = useState(false);
   const [vibration, setVibration] = useState(false);
@@ -42,10 +47,9 @@ export const PomorodoContextProvider = ({ children }: { children: React.ReactNod
   const [selectedMp3, setSelectedMp3] = useState('alarm1');
   const [workCounter, setWorkCounter] = useState(0);
   const [breakCounter, setBreakCounter] = useState(0);
-  const [workDuration, setWorkDuration] = useState(WORK_TIME_IN_SECONDS);
-  const [breakDuration, setBreakDuration] = useState(BREAK_TIME_IN_SECONDS);
+  const [workDuration, setWorkDuration] = useState(DEFAULT_WORK_TIME_IN_SECONDS);
+  const [breakDuration, setBreakDuration] = useState(DEFAULT_BREAK_TIME_IN_SECONDS);
   const [resetTimer, setResetTimer] = useState('');
-
   const [stateSound, setStateSound] = useState<Audio.Sound | undefined>();
 
   const playSound = useCallback(async () => {
@@ -96,13 +100,11 @@ export const PomorodoContextProvider = ({ children }: { children: React.ReactNod
 
       await soundToPlay.playAsync();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }, [selectedMp3]);
 
   useEffect(() => {
-    console.log('unloading');
-
     return stateSound
       ? () => {
           stateSound.unloadAsync();
@@ -112,6 +114,8 @@ export const PomorodoContextProvider = ({ children }: { children: React.ReactNod
 
   const values = useMemo(
     () => ({
+      isPlaying,
+      setIsPlaying,
       timerState,
       setTimerState,
       autoplay,
@@ -137,6 +141,7 @@ export const PomorodoContextProvider = ({ children }: { children: React.ReactNod
       playSound,
     }),
     [
+      isPlaying,
       timerState,
       autoplay,
       vibration,

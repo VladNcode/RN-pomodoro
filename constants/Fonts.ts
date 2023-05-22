@@ -1,6 +1,6 @@
 export default {
-  Poppins: 'Poppins',
   SpaceMono: 'SpaceMono',
+  Poppins: 'Poppins',
   PoppinsLight: 'PoppinsLight',
   PoppinsBold: 'PoppinsBold',
 };
