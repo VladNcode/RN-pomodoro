@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native';
+import { StatusBar, Text, View } from 'react-native';
 
 import { styles } from './styles';
 
@@ -45,6 +45,8 @@ export const ModalScreen = () => {
         vibration and sounds, and track your progress effortlessly. Take the first step towards a more productive and
         fulfilling work routine today.
       </Text>
+      {/* Hiding status bar for iOS */}
+      <StatusBar hidden />
     </View>
   );
 };
