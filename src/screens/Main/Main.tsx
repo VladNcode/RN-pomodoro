@@ -1,6 +1,5 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import RNBounceable from '@freakycoder/react-native-bounceable';
-import { useState } from 'react';
 import { StyleSheet, Text, Vibration, View } from 'react-native';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 
@@ -42,7 +41,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function TabOneScreen() {
+export default function Main() {
   const {
     timerState,
     setTimerState,

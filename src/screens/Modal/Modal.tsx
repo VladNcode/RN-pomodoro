@@ -2,8 +2,8 @@ import { Link, useNavigation } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 
-import Fonts from '../constants/Fonts';
-import Colors from '../constants/Colors';
+import Fonts from '../../constants/Fonts';
+import Colors from '../../constants/Colors';
 
 const styles = StyleSheet.create({
   container: {

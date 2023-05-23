@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   disabledPicker: { backgroundColor: 'gray' },
 });
 
-export default function TabTwoScreen() {
+export default function Settings() {
   const {
     autoplay,
     vibration,
