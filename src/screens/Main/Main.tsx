@@ -1,47 +1,14 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import RNBounceable from '@freakycoder/react-native-bounceable';
-import { StyleSheet, Text, Vibration, View } from 'react-native';
+import { Text, Vibration, View } from 'react-native';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 
-import Colors from '../../constants/Colors';
-import Fonts from '../../constants/Fonts';
+import { Colors } from '../../constants';
 import usePomodoroContext from '../../context/usePomodoroContext';
 import { convertSecondsToMinutesAndSeconds, getRandomString } from '../../utils/utils';
+import { styles } from './styles';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  sessions: {
-    fontFamily: Fonts.Poppins,
-    color: Colors.white,
-    fontSize: 25,
-    fontWeight: 'bold',
-  },
-
-  timerText: {
-    fontFamily: Fonts.SpaceMono,
-    color: Colors.white,
-    fontSize: 40,
-    fontWeight: 'bold',
-  },
-
-  stopStartButton: {
-    marginTop: 10,
-    height: 50,
-    width: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  countdownContainer: {
-    marginVertical: 60,
-  },
-});
-
-export default function Main() {
+export const Main = () => {
   const {
     timerState,
     setTimerState,
@@ -106,4 +73,4 @@ export default function Main() {
       </RNBounceable>
     </View>
   );
-}
+};
