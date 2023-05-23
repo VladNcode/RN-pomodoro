@@ -1,4 +1,4 @@
-export default {
+export const Fonts = {
   SpaceMono: 'SpaceMono',
   Poppins: 'Poppins',
   PoppinsLight: 'PoppinsLight',

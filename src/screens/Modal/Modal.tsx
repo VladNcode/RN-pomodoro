@@ -1,40 +1,10 @@
-import { Link, useNavigation } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
-import Fonts from '../constants/Fonts';
-import Colors from '../constants/Colors';
+import { styles } from './styles';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.fullBlack,
-  },
-  text: {
-    marginTop: 12,
-    marginHorizontal: 16,
-    fontFamily: Fonts.Poppins,
-    textAlign: 'justify',
-    color: Colors.white,
-    fontSize: 13,
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});
-
-export default function ModalScreen() {
-  const navigation = useNavigation();
-  // If the page was reloaded or navigated to directly, then the modal should be presented as
-  // a full screen page. You may need to change the UI to account for this.
-  const isPresented = navigation.canGoBack();
-
+export const ModalScreen = () => {
   return (
     <View style={styles.container}>
-      {!isPresented && <Link href="../">Dismiss</Link>}
-
       <Text style={styles.text}>
         Introducing our innovative Pomodoro app that empowers you to take control of your time and boost productivity
         like never before. With our app, you can easily customize your time intervals, harness the power of autoplay,
@@ -75,9 +45,6 @@ export default function ModalScreen() {
         vibration and sounds, and track your progress effortlessly. Take the first step towards a more productive and
         fulfilling work routine today.
       </Text>
-
-      {/* Use a light status bar on iOS to account for the black space above the modal */}
-      <StatusBar backgroundColor={Colors.light} />
     </View>
   );
-}
+};

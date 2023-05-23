@@ -1,4 +1,4 @@
-export default {
+export const Colors = {
   cyan: '#a5f3fc',
   gray: '#737373',
   lightRed: '#fca5a5',

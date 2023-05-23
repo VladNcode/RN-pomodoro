@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export default StyleSheet.create({
+export const globalStyles = StyleSheet.create({
   smallMarginBottom: {
     marginBottom: 5,
   },
